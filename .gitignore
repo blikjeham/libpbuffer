@@ -2,3 +2,11 @@
 *.so.*
 *~
 *.o
+*.a
+stamp-h1
+*.scan
+*.log
+*.status
+.deps
+autom4te.cache
+config.h
