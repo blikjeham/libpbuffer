@@ -33,8 +33,8 @@ void pbuffer_add(pbuffer *buffer, char *data)
 {
 	ssize_t size;
 	size = buffer->size;
-	if (buffer->size < buffer->size + strlen(data) - 1) {
-		pbuffer_grow(buffer, buffer->size + strlen(data) - 1);
+	if (buffer->size < buffer->size + strlen(data)) {
+		pbuffer_grow(buffer, buffer->size + strlen(data));
 	}
 	memcpy((buffer->data + (size)), data, strlen(data));
 }
