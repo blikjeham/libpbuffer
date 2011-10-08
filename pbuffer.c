@@ -35,7 +35,10 @@ pbuffer *pbuffer_new(void)
 void pbuffer_set(pbuffer *buffer, char *data)
 {
 	if (buffer->size < strlen(data)) {
-		pbuffer_grow(buffer, strlen(data));
+		if(!pbuffer_grow(buffer, strlen(data))) {
+			fprintf(stderr, "growing pbuffer failed\n");
+			return;
+		}
 	} else {
 		/* If not grown, we need to set the size */
 		buffer->size = strlen(data);
@@ -56,8 +59,8 @@ void pbuffer_add(pbuffer *buffer, char *data)
 ssize_t pbuffer_grow(pbuffer *buffer, ssize_t size)
 {
 	buffer->data = realloc(buffer->data, size);
-	if (buffer == NULL) {
-		printf("error\n");
+	if (buffer->data == NULL) {
+		printf("error reallocating memory.\n");
 		return(0);
 	}
 	buffer->size = size;
