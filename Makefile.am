@@ -1,6 +1,8 @@
 # Makefile.am
 #
 
-lib_LIBRARIES = libpbuffer.a
-libpbuffer_a_SOURCES = pbuffer.c
-libpbuffer_a_CPPFLAGS = -ggdb -Wall 
+AM_CPPFLAGS = -ggdb -Wall
+
+lib_LTLIBRARIES = libpbuffer.la
+libpbuffer_la_SOURCES = pbuffer.c pbuffer.h
+include_HEADERS = pbuffer.h
