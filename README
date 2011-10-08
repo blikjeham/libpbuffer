@@ -1,0 +1,32 @@
+libpbuffer is a library for dynamic buffer handling written in C.
+
+Using it is quite easy.
+For example:
+
+#include <stdio.h>
+#include <pbuffer.h>
+
+int main()
+{
+	pbuffer *buffer = pbuffer_new();
+	pbuffer_set(buffer, "Hello ");
+	printf("%s\n", buffer->data);
+	printf("size is: %d\n", buffer->size);
+	pbuffer_add(buffer, "world!\n");
+	printf("%s", buffer->data);
+	printf("size is: %d\n", buffer->size);
+	pbuffer_free(buffer);
+	return 0;
+}
+
+Compile the code with -lpbuffer and you're set.
+That should do the trick with hello world.
+
+More functions will appear as soon as they are needed, but for now that's it.
+
+The buffer itself is just a typedef to a struct pbuffer:
+
+struct pbuffer {
+	ssize_t size;
+	char *data;
+};
