@@ -20,6 +20,7 @@
 #define HAVE_PBUFFER_H 1
 
 #include <stdlib.h>
+#include <sys/types.h>
 
 typedef struct pbuffer pbuffer;
 
