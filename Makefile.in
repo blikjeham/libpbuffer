@@ -223,7 +223,6 @@ top_srcdir = @top_srcdir@
 AM_CPPFLAGS = -ggdb -Wall
 lib_LTLIBRARIES = libpbuffer.la
 libpbuffer_la_SOURCES = pbuffer.c pbuffer.h
-#libpbuffer_includedir = $(includedir)/pbuffer
 include_HEADERS = pbuffer.h
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
