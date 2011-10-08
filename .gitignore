@@ -2,7 +2,9 @@
 *.so.*
 *~
 *.o
+*.lo
 *.a
+*.la
 stamp-h1
 *.scan
 *.log
@@ -13,3 +15,4 @@ config.h
 Makefile
 *.guess
 config.sub
+.libs
