@@ -1,0 +1,4 @@
+version 0.1:
+	Initial code.
+	It creates and frees the buffer.
+	It can add to the buffer, and set the buffer.

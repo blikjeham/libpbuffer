@@ -10,12 +10,17 @@ int main()
 {
 	pbuffer *buffer = pbuffer_new();
 	pbuffer_set(buffer, "Hello ");
+
 	printf("%s\n", buffer->data);
 	printf("size is: %d\n", buffer->size);
+
 	pbuffer_add(buffer, "world!\n");
+
 	printf("%s", buffer->data);
 	printf("size is: %d\n", buffer->size);
+
 	pbuffer_free(buffer);
+
 	return 0;
 }
 
