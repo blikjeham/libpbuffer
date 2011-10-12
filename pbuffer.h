@@ -30,7 +30,7 @@ struct pbuffer {
 };
 
 /* Allocate memory for the buffer. Return the pointer to the buffer. */
-pbuffer *pbuffer_new(void);
+int pbuffer_init(pbuffer *);
 
 /* Set the buffer to this value. */
 void pbuffer_set(pbuffer *, char *);

@@ -23,13 +23,14 @@
 
 #include "pbuffer.h"
 
-pbuffer *pbuffer_new(void)
+int pbuffer_init(pbuffer *newbuffer)
 {
-	pbuffer *newbuffer = malloc(sizeof(ssize_t) + sizeof(char *));
+	newbuffer = malloc(sizeof(ssize_t) + sizeof(char *));
 	newbuffer->size = 0;
 	newbuffer->data = malloc(0);
-	
-	return(newbuffer);
+	if (newbuffer->data == NULL)
+		return(1);
+	return(0);
 }
 
 void pbuffer_set(pbuffer *buffer, char *data)
@@ -52,6 +53,8 @@ void pbuffer_add(pbuffer *buffer, char *data)
 	size = buffer->size;
 	if (buffer->size < buffer->size + strlen(data)) {
 		pbuffer_grow(buffer, buffer->size + strlen(data));
+	} else {
+		buffer->size = buffer->size + strlen(data);
 	}
 	memcpy((buffer->data + (size)), data, strlen(data));
 }
