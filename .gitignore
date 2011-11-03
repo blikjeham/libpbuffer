@@ -13,6 +13,4 @@ stamp-h1
 autom4te.cache
 config.h
 Makefile
-*.guess
-config.sub
 .libs
