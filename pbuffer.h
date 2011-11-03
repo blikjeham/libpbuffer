@@ -30,13 +30,15 @@ struct pbuffer {
 };
 
 /* Allocate memory for the buffer. Return the pointer to the buffer. */
-int pbuffer_init(pbuffer *);
+pbuffer *pbuffer_init(void);
 
 /* Set the buffer to this value. */
 void pbuffer_set(pbuffer *, char *);
+int pbuffer_strcpy(pbuffer *, char *);
 
 /* Add this string to the buffer. */
 void pbuffer_add(pbuffer *, char *);
+int pbuffer_strcat(pbuffer *, char *);
 
 /* Grow the buffer to this new size */
 ssize_t pbuffer_grow(pbuffer *, ssize_t );

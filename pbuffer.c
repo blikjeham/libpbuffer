@@ -23,14 +23,13 @@
 
 #include "pbuffer.h"
 
-int pbuffer_init(pbuffer *newbuffer)
+pbuffer *pbuffer_init(void)
 {
+	pbuffer *newbuffer;
 	newbuffer = malloc(sizeof(ssize_t) + sizeof(char *));
 	newbuffer->size = 0;
 	newbuffer->data = malloc(0);
-	if (newbuffer->data == NULL)
-		return(1);
-	return(0);
+	return(newbuffer);
 }
 
 void pbuffer_set(pbuffer *buffer, char *data)
@@ -44,7 +43,21 @@ void pbuffer_set(pbuffer *buffer, char *data)
 		/* If not grown, we need to set the size */
 		buffer->size = strlen(data);
 	}
-	memcpy(buffer->data, data, strlen(data));
+	strncpy(buffer->data, data, strlen(data));
+}
+
+int pbuffer_strcpy(pbuffer *buffer, char *data)
+{
+	if (buffer->size < strlen(data)) {
+		if (!pbuffer_grop(buffer, strlen(data))) {
+			fprintf(stderr, "growing pbuffer failed\n");
+			return(-1);
+		}
+	} else {
+		buffer->size = strlen(data);
+	}
+	strncpy(buffer->data, data, strlen(data));
+	return(0);
 }
 
 void pbuffer_add(pbuffer *buffer, char *data)
@@ -56,7 +69,22 @@ void pbuffer_add(pbuffer *buffer, char *data)
 	} else {
 		buffer->size = buffer->size + strlen(data);
 	}
-	memcpy((buffer->data + (size)), data, strlen(data));
+	memcat((buffer->data + (size)), data, strlen(data));
+}
+
+int pbuffer_strcat(pbuffer *buffer, char *data)
+{
+	ssize_t size;
+	size = buffer->size;
+	if (buffer->size < buffer->size + strlen(data)) {
+		pbuffer_grow(buffer, buffer->size + strlen(data));
+	} else {
+		buffer->size = buffer->size + strlen(data);
+	}
+	
+	strncpy((buffer->data + (size)), data, strlen(data));
+	
+	return(0);
 }
 
 ssize_t pbuffer_grow(pbuffer *buffer, ssize_t size)
