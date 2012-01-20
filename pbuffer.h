@@ -22,26 +22,40 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
+#define PBUFFER_MIN 120
+
+#define pbuffer_end(a) (a->data + a->length)
+#define pbuffer_start(a) (a->data = a->start)
+#define pbuffer_unused(a) (a->allocated - a->length)
+
 typedef struct pbuffer pbuffer;
 
 struct pbuffer {
-	ssize_t size;
-	char *data;
+	size_t length;
+	size_t allocated;
+	void *start;
+	void *data;
 };
 
 /* Allocate memory for the buffer. Return the pointer to the buffer. */
 pbuffer *pbuffer_init(void);
 
 /* Set the buffer to this value. */
-void pbuffer_set(pbuffer *, char *);
+void pbuffer_set(pbuffer *, void *, size_t );
 int pbuffer_strcpy(pbuffer *, char *);
 
 /* Add this string to the buffer. */
-void pbuffer_add(pbuffer *, char *);
+void pbuffer_add(pbuffer *, void *, size_t );
 int pbuffer_strcat(pbuffer *, char *);
 
+/* Move the begin */
+void pbuffer_shift(pbuffer *, size_t );
+
+/* Assure size of the buffer */
+int pbuffer_assure(pbuffer *, size_t );
+
 /* Grow the buffer to this new size */
-ssize_t pbuffer_grow(pbuffer *, ssize_t );
+size_t pbuffer_grow(pbuffer *, size_t );
 
 /* Free the buffer data and the buffer itself. */
 void pbuffer_free(pbuffer *);
