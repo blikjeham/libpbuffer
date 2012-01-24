@@ -81,6 +81,12 @@ void pbuffer_shift(pbuffer *buffer, size_t size)
 	buffer->length = (buffer->length - size);
 }
 
+void pbuffer_extract(pbuffer *buffer, void *dest, size_t len)
+{
+    memcpy(dest, buffer->data, len);
+    pbuffer_shift(buffer, len);
+}
+
 int pbuffer_assure(pbuffer *buffer, size_t size)
 {
 	int ret = 0;

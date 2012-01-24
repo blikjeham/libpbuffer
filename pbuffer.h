@@ -48,8 +48,11 @@ int pbuffer_strcpy(pbuffer *, char *);
 void pbuffer_add(pbuffer *, void *, size_t );
 int pbuffer_strcat(pbuffer *, char *);
 
-/* Move the begin */
+/* Move the beginning of the buffer */
 void pbuffer_shift(pbuffer *, size_t );
+
+/* Extract data from buffer */
+void pbuffer_extract(pbuffer *, void *, size_t);
 
 /* Assure size of the buffer */
 int pbuffer_assure(pbuffer *, size_t );
