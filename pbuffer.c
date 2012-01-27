@@ -25,60 +25,60 @@
 
 pbuffer *pbuffer_init(void)
 {
-	pbuffer *newbuffer;
-	newbuffer = malloc(sizeof(pbuffer));
-	newbuffer->length = 0;
+    pbuffer *newbuffer;
+    newbuffer = malloc(sizeof(pbuffer));
+    newbuffer->length = 0;
 	
-	newbuffer->data = malloc(PBUFFER_MIN);
-	newbuffer->allocated = PBUFFER_MIN;
-	newbuffer->start = newbuffer->data;
+    newbuffer->data = malloc(PBUFFER_MIN);
+    newbuffer->allocated = PBUFFER_MIN;
+    newbuffer->start = newbuffer->data;
 
-	memset(newbuffer->data, 0, newbuffer->allocated);
-	return(newbuffer);
+    memset(newbuffer->data, 0, newbuffer->allocated);
+    return(newbuffer);
 }
 
 void pbuffer_set(pbuffer *buffer, void *data, size_t size)
 {
-	pbuffer_assure(buffer, size);
-	memcpy(buffer->data, data, size);
-	buffer->length = size;
+    pbuffer_assure(buffer, size);
+    memcpy(buffer->data, data, size);
+    buffer->length = size;
 }
 
 int pbuffer_strcpy(pbuffer *buffer, char *data)
 {
-	size_t size;
+    size_t size;
 		
-	size = strlen(data);
-	pbuffer_assure(buffer, size);
-	strncpy(buffer->data, data, size);
-	memset(buffer->data+size, 0, buffer->allocated-size);
-	buffer->length = size;
-	return(0);
+    size = strlen(data);
+    pbuffer_assure(buffer, size);
+    strncpy(buffer->data, data, size);
+    memset(buffer->data+size, 0, buffer->allocated-size);
+    buffer->length = size;
+    return(0);
 }
 
 void pbuffer_add(pbuffer *buffer, void *data, size_t size)
 {
-	pbuffer_assure(buffer, size + buffer->length);
-	memcpy(pbuffer_end(buffer), data, size);
-	buffer->length += size;
+    pbuffer_assure(buffer, size + buffer->length);
+    memcpy(pbuffer_end(buffer), data, size);
+    buffer->length += size;
 }
 
 int pbuffer_strcat(pbuffer *buffer, char *data)
 {
-	size_t size;
-	size = buffer->length;
+    size_t size;
+    size = buffer->length;
 
-	pbuffer_assure(buffer, size + strlen(data));
-	strncpy((buffer->data + (size)), data, strlen(data));
-	buffer->length = size + strlen(data);
-	return(buffer->length);
+    pbuffer_assure(buffer, size + strlen(data));
+    strncpy((buffer->data + (size)), data, strlen(data));
+    buffer->length = size + strlen(data);
+    return(buffer->length);
 }
 
 void pbuffer_shift(pbuffer *buffer, size_t size)
 {
-	pbuffer_assure(buffer, size);
-	buffer->data = (buffer->data + size);
-	buffer->length = (buffer->length - size);
+    pbuffer_assure(buffer, size);
+    buffer->data = (buffer->data + size);
+    buffer->length = (buffer->length - size);
 }
 
 void pbuffer_extract(pbuffer *buffer, void *dest, size_t len)
@@ -89,43 +89,40 @@ void pbuffer_extract(pbuffer *buffer, void *dest, size_t len)
 
 int pbuffer_assure(pbuffer *buffer, size_t size)
 {
-	int ret = 0;
+    int ret = 0;
 	
-	if (pbuffer_unused(buffer) < size) {
-		ret = pbuffer_grow(buffer, size);
-	}
-	if (ret < size) {
-		ret = pbuffer_grow(buffer, (size * 2) | PBUFFER_MIN);
-	}
-	return(0);
+    if (pbuffer_unused(buffer) < size) {
+	ret = pbuffer_grow(buffer, size);
+    }
+    if (ret < size) {
+	ret = pbuffer_grow(buffer, (size * 2) | PBUFFER_MIN);
+    }
+    return(0);
 }
 
 size_t pbuffer_grow(pbuffer *buffer, size_t size)
 {
-	if (size < pbuffer_unused(buffer)) {
-		return(buffer->allocated);
-	}
-	size_t newsize = (buffer->allocated*2) | PBUFFER_MIN;
-	buffer->data = realloc(buffer->data, newsize);
+    if (size < pbuffer_unused(buffer)) {
+	return(buffer->allocated);
+    }
+    size_t newsize = (buffer->allocated*2) | PBUFFER_MIN;
+    buffer->data = realloc(buffer->data, newsize);
 
-	if (buffer->data == NULL) {
-		printf("error reallocating memory.\n");
-		return(0);
-	}
+    if (buffer->data == NULL) {
+	printf("error reallocating memory.\n");
+	return(0);
+    }
 
-	buffer->allocated = newsize;
+    buffer->allocated = newsize;
 
-	/* Clear fresh memory */
-	memset(pbuffer_end(buffer), 0, pbuffer_unused(buffer));
-	return(newsize);
+    /* Clear fresh memory */
+    memset(pbuffer_end(buffer), 0, pbuffer_unused(buffer));
+    return(newsize);
 }
 
 void pbuffer_free(pbuffer *buffer)
 {
-	if (buffer->data != NULL) {
-		free(buffer->data);
-	}
-	if (buffer) {
-		free(buffer);
-	}
+    if (buffer) {
+	free(buffer);
+    }
 }
