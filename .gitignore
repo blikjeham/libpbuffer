@@ -14,3 +14,5 @@ autom4te.cache
 config.h
 Makefile
 .libs
+test
+test.c
