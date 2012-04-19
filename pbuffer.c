@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <stdarg.h>
 
 #include "pbuffer.h"
 
@@ -42,6 +43,19 @@ void pbuffer_set(pbuffer *buffer, void *data, size_t size)
     pbuffer_assure(buffer, size);
     memcpy(buffer->data, data, size);
     buffer->length = size;
+}
+
+void pbuffer_sprintf(pbuffer *buffer, char *fmt, ...)
+{
+    int len;
+    int needed;
+    va_list va;
+    len = buffer->allocated;
+    va_start(va, fmt);
+    while ((needed = vsnprintf(buffer->data, len, fmt, va)) > len)
+	pbuffer_assure(buffer, needed);
+
+    va_end(va);
 }
 
 int pbuffer_strcpy(pbuffer *buffer, char *data)
