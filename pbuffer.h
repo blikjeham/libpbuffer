@@ -45,7 +45,10 @@ void pbuffer_set(pbuffer *, void *, size_t );
 int pbuffer_strcpy(pbuffer *, char *);
 void pbuffer_sprintf(pbuffer *buffer, char *fmt, ...)
     __attribute__((format(printf,2,3)));
+
 /* Add this string to the buffer. */
+void pbuffer_add_sprintf(pbuffer *buffer, char *fmt, ...)
+    __attribute__((format(printf,2,3)));
 void pbuffer_add(pbuffer *, void *, size_t );
 int pbuffer_strcat(pbuffer *, char *);
 

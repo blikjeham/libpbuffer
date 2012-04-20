@@ -52,9 +52,28 @@ void pbuffer_sprintf(pbuffer *buffer, char *fmt, ...)
     va_list va;
     len = buffer->allocated;
     va_start(va, fmt);
+    
     while ((needed = vsnprintf(buffer->data, len, fmt, va)) > len)
 	pbuffer_assure(buffer, needed);
 
+    buffer->length += needed;
+    
+    va_end(va);
+}
+
+void pbuffer_add_sprintf(pbuffer *buffer, char *fmt, ...)
+{
+    int len;
+    int needed;
+    va_list va;
+    len = pbuffer_unused(buffer);
+    va_start(va, fmt);
+
+    while ((needed = vsnprintf(buffer->data + buffer->length, len, fmt, va)) > len)
+	pbuffer_assure(buffer, (buffer->length + needed));
+
+    buffer->length += needed;
+    
     va_end(va);
 }
 
