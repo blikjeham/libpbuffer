@@ -69,7 +69,7 @@ void pbuffer_add_sprintf(pbuffer *buffer, char *fmt, ...)
     len = pbuffer_unused(buffer);
     va_start(va, fmt);
 
-    while ((needed = vsnprintf(buffer->data + buffer->length, len, fmt, va)) > len)
+    while ((needed = vsnprintf(pbuffer_end(buffer), len, fmt, va)) > len)
 	pbuffer_assure(buffer, (buffer->length + needed));
 
     buffer->length += needed;
