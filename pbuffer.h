@@ -61,9 +61,6 @@ void pbuffer_extract(pbuffer *, void *, size_t);
 /* Assure size of the buffer */
 int pbuffer_assure(pbuffer *, size_t );
 
-/* Grow the buffer to this new size */
-size_t pbuffer_grow(pbuffer *, size_t );
-
 /* Free the buffer data and the buffer itself. */
 void pbuffer_free(pbuffer *);
 

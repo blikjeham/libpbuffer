@@ -24,6 +24,26 @@
 
 #include "pbuffer.h"
 
+static size_t pbuffer_grow(pbuffer *buffer, size_t size)
+{
+    if (size < pbuffer_unused(buffer)) {
+	return(buffer->allocated);
+    }
+    size_t newsize = (buffer->allocated*2) | PBUFFER_MIN;
+    buffer->data = realloc(buffer->data, newsize);
+
+    if (buffer->data == NULL) {
+	printf("error reallocating memory.\n");
+	return(0);
+    }
+
+    buffer->allocated = newsize;
+
+    /* Clear fresh memory */
+    memset(pbuffer_end(buffer), 0, pbuffer_unused(buffer));
+    return(newsize);
+}
+
 pbuffer *pbuffer_init(void)
 {
     pbuffer *newbuffer;
@@ -131,26 +151,6 @@ int pbuffer_assure(pbuffer *buffer, size_t size)
 	ret = pbuffer_grow(buffer, (size * 2) | PBUFFER_MIN);
     }
     return(0);
-}
-
-size_t pbuffer_grow(pbuffer *buffer, size_t size)
-{
-    if (size < pbuffer_unused(buffer)) {
-	return(buffer->allocated);
-    }
-    size_t newsize = (buffer->allocated*2) | PBUFFER_MIN;
-    buffer->data = realloc(buffer->data, newsize);
-
-    if (buffer->data == NULL) {
-	printf("error reallocating memory.\n");
-	return(0);
-    }
-
-    buffer->allocated = newsize;
-
-    /* Clear fresh memory */
-    memset(pbuffer_end(buffer), 0, pbuffer_unused(buffer));
-    return(newsize);
 }
 
 void pbuffer_free(pbuffer *buffer)
