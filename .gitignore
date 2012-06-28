@@ -16,3 +16,14 @@ Makefile
 .libs
 test
 test.c
+Makefile.in
+aclocal.m4
+compile
+config.guess
+config.sub
+configure
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
