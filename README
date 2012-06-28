@@ -73,3 +73,8 @@ struct pbuffer {
 	void *start;
 	void *data;
 };
+
+==========
+
+To build the code, you need to run autoreconf first. This will create the necesary
+files.
