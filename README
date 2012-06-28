@@ -1,37 +1,75 @@
 libpbuffer is a library for dynamic buffer handling written in C.
 
-Using it is quite easy.
-For example:
+This document explains briefly how to use this library.
 
-#include <stdio.h>
-#include <pbuffer.h>
+==========
 
-int main()
-{
-	pbuffer *buffer = pbuffer_new();
-	pbuffer_set(buffer, "Hello ");
+INITIALIZING AND DESTROYING:
+----------------------------
+/* declaring a buffer */
+pbuffer *buffer;
 
-	printf("%s\n", buffer->data);
-	printf("size is: %d\n", buffer->size);
+/* allocating and initializing the buffer */
+buffer = pbuffer_init();
 
-	pbuffer_add(buffer, "world!\n");
+/* freeing the buffer */
+pbuffer_free(buffer);
 
-	printf("%s", buffer->data);
-	printf("size is: %d\n", buffer->size);
+SETTING THE BUFFER:
+-------------------
+/* set one raw byte of data */
+pbuffer_set(buffer, 0x31, 1);
 
-	pbuffer_free(buffer);
+/* set a string */
+pbuffer_strcpy(buffer, "First string");
 
-	return 0;
-}
+/* include some variables */
+pbuffer_sprintf(buffer, "This is string %d", count);
 
-Compile the code with -lpbuffer and you're set.
-That should do the trick with hello world.
+ADDING TO THE BUFFER:
+---------------------
+/* add raw data to the end */
+pbuffer_add(buffer, 0x33, 1);
+
+/* add a string to the end */
+pbuffer_strcat(buffer, "\nSecond string");
+
+/* add a string with vars to the end */
+pbuffer_add_sprintf(buffer, "\nThis is string %d", count+1);
+
+OTHER FUNCTIONS:
+----------------
+/* extract two bytes of raw data to dst */
+pbuffer_extract(buffer, dst, 2);
+
+/* Shift the beginning of the buffer 10 bytes forward */
+pbuffer_shift(buffer, 10);
+
+/* Make sure the buffer is large enough for holding 10 bytes */
+pbuffer_assure(buffer, 10);
+
+SOME MACROS:
+------------
+/* return to the start of the buffer (after shifting) */
+pbuffer_start(buffer);
+
+/* give the position of the last byte in the buffer */
+printf(pbuffer_end(buffer));
+
+/* give the space left (before we need to grow) */
+printf(pbuffer_unused(buffer));
+
+==========
+
+Linking against pbuffer, you just add -lpbuffer to the commandline of your linker.
 
 More functions will appear as soon as they are needed, but for now that's it.
 
 The buffer itself is just a typedef to a struct pbuffer:
 
 struct pbuffer {
-	ssize_t size;
-	char *data;
+	size_t length;
+	size_t allocated;
+	void *start;
+	void *data;
 };
